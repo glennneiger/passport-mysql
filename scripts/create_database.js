@@ -24,6 +24,7 @@ CREATE TABLE `' + dbconfig.database + '`.`' + dbconfig.users_table + '` ( \
     UNIQUE INDEX `id_UNIQUE` (`id` ASC), \
     UNIQUE INDEX `username_UNIQUE` (`username` ASC) \
 )');
+
 connection.query('\
 CREATE TABLE `' + dbconfig.database + '`.`' + dbconfig.contact_table + '` ( \
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT, \

@@ -14,7 +14,7 @@
 
 <div class="col-sm-6 col-sm-offset-3">
 
-    <h1><span class="fa fa-sign-in"></span> Contact</h1>
+    <h1><span class="fa fa-sign-in"></span> Contcat</h1>
 
     <!-- show any messages that come back with authentication -->
     <% if (message.length > 0) { %>
@@ -27,10 +27,18 @@
             <label>Username</label>
             <input type="text" class="form-control" name="username">
         </div>
-        <button type="submit" class="btn btn-warning btn-lg">Add</button>
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" class="form-control" name="password">
+        </div>
+
+        <button type="submit" class="btn btn-warning btn-lg">Contact</button>
     </form>
-    <p>contact <a href="/detail">contact</a></p>
+
+    <hr>
+
 </div>
+
 </div>
 </body>
 </html>

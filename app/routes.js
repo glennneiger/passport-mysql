@@ -35,8 +35,6 @@ module.exports = function(app, passport) {
         res.redirect('/');
     });
 
-	
-
 
 	// =====================================
 	// SIGNUP ==============================
@@ -48,7 +46,6 @@ module.exports = function(app, passport) {
 	});
 
 	
-
 	// process the signup form
 	app.post('/signup', passport.authenticate('local-signup', {
 		successRedirect : '/profile', // redirect to the secure profile section
@@ -56,24 +53,20 @@ module.exports = function(app, passport) {
 		failureFlash : true // allow flash messages
 	}));
 
+
 	app.get('/contact', function(req, res) {
 		// render the page and pass in any flash data if it exists
 		res.render('contact.ejs', { message: req.flash('contactMessage') });
 	});
 
-	// // process the signup form
-	// app.post('/contact', passport.authenticate('local-signup', {
-	// 	successRedirect : '/detail', // redirect to the secure profile section
-	// 	failureRedirect : '/contact', // redirect back to the signup page if there is an error
-	// 	failureFlash : true // allow flash messages
-	// }));
+	
+	// process the signup form
+	app.post('/contact', passport.authenticate('local-contact', {
+		successRedirect : '/detail', // redirect to the secure profile section
+		failureRedirect : '/contact', // redirect back to the signup page if there is an error
+		failureFlash : true // allow flash messages
+	}));
 
-
-	app.get('/detail', isLoggedIn, function(req, res) {
-		res.render('detail.ejs', {
-			user : req.user // get the user out of session and pass to template
-		});
-	});
 
 	// // =====================================
 	// // PROFILE SECTION =========================
@@ -83,6 +76,12 @@ module.exports = function(app, passport) {
 	
 	app.get('/profile', isLoggedIn, function(req, res) {
 		res.render('profile.ejs', {
+			user : req.user // get the user out of session and pass to template
+		});
+	});
+
+	app.get('/detail', isLoggedIn, function(req, res) {
+		res.render('detail.ejs', {
 			user : req.user // get the user out of session and pass to template
 		});
 	});

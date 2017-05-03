@@ -24,12 +24,16 @@ module.exports = function(passport) {
         done(null, user.id);
     });
 
-    // used to deserialize the user
+
+
+   // used to deserialize the user
     passport.deserializeUser(function(id, done) {
         connection.query("SELECT * FROM users WHERE id = ? ",[id], function(err, rows){
             done(err, rows[0]);
+            console.log(id);
         });
     });
+
 
     // =========================================================================
     // LOCAL SIGNUP ============================================================
@@ -83,6 +87,7 @@ module.exports = function(passport) {
             passReqToCallback : true // allows us to pass back the entire request to the callback
         },
         function(req, username, password, done) { // callback with email and password from our form
+            console.log('hi');
             connection.query("SELECT * FROM users WHERE username = ?",[username], function(err, rows){
                 if (err)
                     return done(err);
@@ -99,43 +104,43 @@ module.exports = function(passport) {
             });
         })
     );
-
-
-      // passport.use(
-      //   'local-contact',
-      //   new LocalStrategy({
-      //       // by default, local strategy uses username and password, we will override with email
-      //       usernameField : 'username',
-      //       passReqToCallback : true // allows us to pass back the entire request to the callback
-      //   },
-      //   function(req, username, done) {
-            
-      //       connection.query("SELECT * FROM users WHERE username = ?",[username], function(err, rows) {
-      //           if (err){
-      //               return done(err);
-      //               console.log(err);
-      //           }
-      //           //     if (!rows.length) {
-      //           //     return done(null, false, req.flash('ContactMessage', 'No user found.')); // req.flash is the way to set flashdata using connect-flash
-      //           // }
-
-      //            else {
-      //               // if there is no user with that username
-      //               // create the user
-      //               var newUser = {
-      //                   username: username,
-      //               };
-      //               var insertQuery = "INSERT INTO users ( username ) values (?)";
-
-      //               connection.query(insertQuery,[newUser.username],function(err, rows) {
-      //                   newUser.id = rows.insertId;
-
-      //                   return done(null, newUser);
-      //               });
-      //           }
-      //       });
-      //   })
-    // );
-
     
+    
+    passport.use(
+        'local-contact',
+        new LocalStrategy({
+            // by default, local strategy uses username and password, we will override with email
+            usernameField : 'username',
+            passwordField : 'password',
+            passReqToCallback : true // allows us to pass back the entire request to the callback
+        },
+        function(req, username, password, done) {
+            // find a user whose email is the same as the forms email
+            // we are checking to see if the user trying to login already exists
+            connection.query("SELECT * FROM users WHERE username = ?",[username], function(err, rows) {
+                if (err)
+                    return done(err);
+                if (rows.length) {
+                    return done(null, false, req.flash('contactMessage', 'already exist'));
+                } else {
+                    // if there is no user with that username
+                    // create the user
+                    var newUserMysql = {
+                        username: username,
+                        password: bcrypt.hashSync(password, null, null)  // use the generateHash function in our user model
+                    };
+
+                    var insertQuery = "INSERT INTO users ( username, password ) values (?,?)";
+
+                    connection.query(insertQuery,[newUserMysql.username, newUserMysql.password],function(err, rows) {
+                        newUserMysql.id = rows.insertId;
+
+                        return done(null, newUserMysql);
+                    });
+                }
+            });
+        })
+    );
+
+
 };
