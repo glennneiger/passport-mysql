@@ -101,41 +101,41 @@ module.exports = function(passport) {
     );
 
 
-      passport.use(
-        'local-contact',
-        new LocalStrategy({
-            // by default, local strategy uses username and password, we will override with email
-            usernameField : 'username',
-            passReqToCallback : true // allows us to pass back the entire request to the callback
-        },
-        function(req, username, done) {
+      // passport.use(
+      //   'local-contact',
+      //   new LocalStrategy({
+      //       // by default, local strategy uses username and password, we will override with email
+      //       usernameField : 'username',
+      //       passReqToCallback : true // allows us to pass back the entire request to the callback
+      //   },
+      //   function(req, username, done) {
             
-            connection.query("SELECT * FROM contact_list WHERE username = ?",[username], function(err, rows) {
-                if (err){
-                    return done(err);
-                    console.log(err);
-                }
-                //     if (!rows.length) {
-                //     return done(null, false, req.flash('ContactMessage', 'No user found.')); // req.flash is the way to set flashdata using connect-flash
-                // }
+      //       connection.query("SELECT * FROM users WHERE username = ?",[username], function(err, rows) {
+      //           if (err){
+      //               return done(err);
+      //               console.log(err);
+      //           }
+      //           //     if (!rows.length) {
+      //           //     return done(null, false, req.flash('ContactMessage', 'No user found.')); // req.flash is the way to set flashdata using connect-flash
+      //           // }
 
-                 else {
-                    // if there is no user with that username
-                    // create the user
-                    var newUser = {
-                        username: username,
-                    };
-                    var insertQuery = "INSERT INTO contact_list ( username ) values (?)";
+      //            else {
+      //               // if there is no user with that username
+      //               // create the user
+      //               var newUser = {
+      //                   username: username,
+      //               };
+      //               var insertQuery = "INSERT INTO users ( username ) values (?)";
 
-                    connection.query(insertQuery,[newUser.username],function(err, rows) {
-                        newUser.id = rows.insertId;
+      //               connection.query(insertQuery,[newUser.username],function(err, rows) {
+      //                   newUser.id = rows.insertId;
 
-                        return done(null, newUser);
-                    });
-                }
-            });
-        })
-    );
+      //                   return done(null, newUser);
+      //               });
+      //           }
+      //       });
+      //   })
+    // );
 
     
 };

@@ -5,7 +5,7 @@ module.exports = {
         'user': 'root',
         'password': 'root'
     },
-	'database': 'database_for_login',
+	'database': 'database_login',
     'users_table': 'users',
     'contact_table': 'contact_list'
 };

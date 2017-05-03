@@ -35,6 +35,9 @@ module.exports = function(app, passport) {
         res.redirect('/');
     });
 
+	
+
+
 	// =====================================
 	// SIGNUP ==============================
 	// =====================================
@@ -44,6 +47,8 @@ module.exports = function(app, passport) {
 		res.render('signup.ejs', { message: req.flash('signupMessage') });
 	});
 
+	
+
 	// process the signup form
 	app.post('/signup', passport.authenticate('local-signup', {
 		successRedirect : '/profile', // redirect to the secure profile section
@@ -51,22 +56,18 @@ module.exports = function(app, passport) {
 		failureFlash : true // allow flash messages
 	}));
 
-	// =====================================
-	// PROFILE SECTION =========================
-	// =====================================
-	// we will want this protected so you have to be logged in to visit
-	// we will use route middleware to verify this (the isLoggedIn function)
 	app.get('/contact', function(req, res) {
-
 		// render the page and pass in any flash data if it exists
-		res.render('contact.ejs', { message: req.flash('loginMessage') });
+		res.render('contact.ejs', { message: req.flash('contactMessage') });
 	});
 
-	app.get('/profile', isLoggedIn, function(req, res) {
-		res.render('profile.ejs', {
-			user : req.user // get the user out of session and pass to template
-		});
-	});
+	// // process the signup form
+	// app.post('/contact', passport.authenticate('local-signup', {
+	// 	successRedirect : '/detail', // redirect to the secure profile section
+	// 	failureRedirect : '/contact', // redirect back to the signup page if there is an error
+	// 	failureFlash : true // allow flash messages
+	// }));
+
 
 	app.get('/detail', isLoggedIn, function(req, res) {
 		res.render('detail.ejs', {
@@ -74,12 +75,19 @@ module.exports = function(app, passport) {
 		});
 	});
 
-	app.post('/contact', passport.authenticate('local-contact', {
-		successRedirect : '/detail', // redirect to the secure profile section
-		failureRedirect : '/contact', // redirect back to the signup page if there is an error
-		failureFlash : true // allow flash messages
-	}));
+	// // =====================================
+	// // PROFILE SECTION =========================
+	// =====================================
+	// we will want this protected so you have to be logged in to visit
+	// we will use route middleware to verify this (the isLoggedIn function)
+	
+	app.get('/profile', isLoggedIn, function(req, res) {
+		res.render('profile.ejs', {
+			user : req.user // get the user out of session and pass to template
+		});
+	});
 
+	
 	// =====================================
 	// LOGOUT ==============================
 	// =====================================
